@@ -1,0 +1,12 @@
+#!/bin/bash
+mv .steamos-gamemode.desktop steamos-gamemode.desktop
+echo $(whoami) > .user.tmp
+sudo echo "[General]\nDisplayServer=wayland\n\n[Autologin]\nUser=$(cat .user.tmp)\nSession=gamescope-wayland.desktop" >> /etc/sddm.conf.d/autologin.conf
+ln -s /usr/share/applications/steam.desktop /home/$(cat .user.tmp)/Desktop/steam.desktop
+sudo usermod -a -G rfkill $(cat .user.tmp)
+sudo usermod -a -G wheel $(cat .user.tmp)
+rm -rf .usr.tmp
+sudo systemctl enable cups bluetooth sddm holoiso-reboot-tracker
+steam
+sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sudo echo "recoveryinit" > /root/.bashrc

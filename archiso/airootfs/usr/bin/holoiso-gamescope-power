@@ -1,0 +1,28 @@
+#!/bin/bash
+# Workaround for steam getting killed immediatly during reboot
+# See: jupiter/tasks/-/issues/280
+export STEAMOS_STEAM_REBOOT_SENTINEL="/tmp/steamos-reboot-sentinel"
+if [[ -e "$STEAMOS_STEAM_REBOOT_SENTINEL" ]]; then
+	rm -f "$STEAMOS_STEAM_REBOOT_SENTINEL"
+	sleep 5
+	/usr/bin/steamos-polkit-helpers/steamos-reboot-now
+	sudo pkill -f "gamesc*" && sudo systemctl reboot
+fi
+
+# Workaround for steam getting killed immediatly during shutdown
+# Same idea as reboot sentinel above
+export STEAMOS_STEAM_SHUTDOWN_SENTINEL="/tmp/steamos-shutdown-sentinel"
+if [[ -e "$STEAMOS_STEAM_SHUTDOWN_SENTINEL" ]]; then
+	rm -f "$STEAMOS_STEAM_SHUTDOWN_SENTINEL"
+	sleep 5
+	/usr/bin/steamos-polkit-helpers/steamos-poweroff-now
+	sudo pkill -f "gamesc*" && sudo systemctl poweroff
+fi
+
+# Workaround for gamescope session being persistent
+export STEAMOS_STEAM_SESSIONSELECT_SENTINEL="/tmp/steamos-sessionselect-sentinel"
+if [[ -e "$STEAMOS_STEAM_SESSIONSELECT_SENTINEL" ]]; then
+	rm -f "$STEAMOS_STEAM_SESSIONSELECT_SENTINEL"
+	sleep 4
+	sudo pkexec sed -i 's/plasma/gamescope-wayland/g' /etc/sddm.conf.d/autologin.conf
+fi
