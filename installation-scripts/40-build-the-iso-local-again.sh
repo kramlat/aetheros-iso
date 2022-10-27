@@ -49,7 +49,7 @@ echo
 	echo "Build folder                           : "$buildFolder
 	echo "Out folder                             : "$outFolder
 	echo "################################################################## "
-
+	sudo rm -rvf $buildFolder $outFolder
 	if [ "$archisoVersion" == "$archisoRequiredVersion" ]; then
 		tput setaf 2
 		echo "##################################################################"

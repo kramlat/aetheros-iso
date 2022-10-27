@@ -39,6 +39,7 @@ echo
 	buildFolder=$HOME"/alci-build"
 	outFolder=$HOME"/Alci-Iso-Xanmod-Edge-Out"
 	archisoVersion=$(sudo pacman -Q archiso)
+	sudo rm -rvf $buildFolder $outFolder
 
 	echo "################################################################## "
 	#echo "Building the desktop                   : "$desktop
